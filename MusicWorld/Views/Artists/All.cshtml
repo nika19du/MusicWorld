@@ -1,0 +1,42 @@
+﻿ @model List<MusicWorld.Data.Models.Artist>
+
+@{
+    ViewData["Title"] = "All";
+}
+
+<h2>All Artists</h2>
+
+<a asp-action="Create" style="background-color:#0676FD;color:white;border:none;font-size:20px;padding: 10px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;">
+    New
+</a>
+<div class="table-all-users">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th></th>
+                <th>
+                    <h4 class="edit-h3">Name</h4>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <img src="@item.Image" alt="..." class="img" />
+                    </td>
+                    <td style="font-size:20px;">@item.Name</td>
+                    <td type="button">
+                        <a class="btn-edit" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                        <a class="btn-edit" asp-action="Update" asp-route-id="@item">Edit</a>
+                        <a class="btn-delete" asp-action="Delete" asp-route-id="@item.Id">Delete</a> 
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>

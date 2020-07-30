@@ -1,0 +1,79 @@
+﻿@model List<MusicWorld.Data.Models.User>
+@{
+    ViewData["Title"] = "All";
+}
+
+<h2>All Users</h2>
+
+<a asp-action="Create" style="background-color:#0676FD;color:white;border:none;font-size:20px;padding: 10px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;">
+    New
+</a>
+
+<div class="table-all-users">
+    <table class="table">
+        <thead>
+            <tr>
+                <th><h3>Username</h3></th>
+                <th><h3>First Name</h3></th>
+                <th><h3>Last Name</h3></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                
+                <tr>
+                    <td>@item.Username</td>
+                    <td>@item.FirstName</td>
+                    <td>@item.LastName</td>
+
+                    <td type="button">
+                        <a class="btn-edit" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <a class="btn-delete" asp-action="Delete" asp-route-id="@item.Id">
+                            Delete
+                        </a> 
+                    </td> 
+                </tr>
+            }
+        </tbody>
+    </table> 
+</div>
+
+@*<div class="modal fade" id="allDeleteModal" tabindex="-1" role="dialog" aria-labelledby="allDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="allDeleteModalLabel">Delete </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>*@
+            @*</div>
+            <div class="modal-body">
+                <form id="user-delete-form" href="/Users/Delete">
+                    <div class="form-group">
+                        <label for="delete-y*@s@*er" class="col-form-label font-weight-bold">Are you sure you want to delete this user?</label>*@
+                        @*<input type="text" class="form-control" id="user">*@
+                        @*<input type="hidden" value="@item.Username" />*@
+                    @*</div>
+                </form>
+            </div>*@
+            @*<div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" id="delete-user-button">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+@*<script>
+    window.onload = function () {
+        $('#delete-user-button').click(function () {
+            //  var id =//if you want to pass an Id parameter
+            window.location.href = '@Url.Action("Delete", "Users")/' + @ViewBag.Name;
+            $('#user-delete-form').submit();
+        })
+    }
+</script>*@
