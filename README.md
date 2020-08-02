@@ -1,2 +1,1 @@
-# MusicWorld
- Asp.Net Core project
+# MusicWorld - Asp.Net Core project
