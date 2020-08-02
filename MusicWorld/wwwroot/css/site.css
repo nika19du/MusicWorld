@@ -170,9 +170,7 @@ hr.hr-2 {
 }
 
 table {
-    border-collapse: collapse;
-    /*width: 100%;*/
-    /*position: fixed;*/
+    border-collapse: collapse; 
 }
 
 th,

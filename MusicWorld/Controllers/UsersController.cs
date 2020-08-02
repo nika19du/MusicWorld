@@ -25,38 +25,46 @@ namespace MusicWorld.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(string username,string password,string firstName,string lastName)
+        public IActionResult Create(string username, string password, string firstName, string lastName)
         {
-            this.services.CreateAccount(username, password, firstName,lastName);
+            this.services.CreateAccount(username, password, firstName, lastName);
 
             return RedirectToAction("Home", "Index");
         }
 
-        
+
         public IActionResult Logout()
         {
             services.Logout();
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
 
-        [HttpGet] 
+        [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Login(string username,string password)
+        public IActionResult Login(string username, string password)
         {
-            var result = services.Login(username, password);
-             
-            if(result.Contains("not found"))
+            try
             {
-                return RedirectToAction("Create", "Users"); 
+                var result = services.Login(username, password);
+                 
+                if (result.Contains("not found"))
+                {
+                    return RedirectToAction("Create", "Users");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            else
+            catch
             {
-                return RedirectToAction("Index", "Home");
+                Response.StatusCode = 404;
+                return View("UserNotFound",username);
             }
         }
 
@@ -66,7 +74,7 @@ namespace MusicWorld.Controllers
             return View(context.Users.ToList());
         }
 
-        [HttpGet(Name="Delete")]
+        [HttpGet(Name = "Delete")]
         public IActionResult Delete(string id)
         {
             var isTrue = services.Delete(id);
@@ -77,7 +85,7 @@ namespace MusicWorld.Controllers
             }
             else return RedirectToAction("All", "Users");
         }
-        
+
         [HttpGet]
         public IActionResult Edit()
         {
@@ -89,8 +97,8 @@ namespace MusicWorld.Controllers
             var user = context.Users.FirstOrDefault(x => x.Username == model.Username);
 
             if (user != null)
-            {  
-                services.Update(model,user.Id);
+            {
+                services.Update(model, user.Id);
                 return RedirectToAction("Index", "Home");
             }
             else
