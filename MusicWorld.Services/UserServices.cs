@@ -34,7 +34,9 @@ namespace MusicWorld.Services
             else
             {
                 user.IsAdmin = false;
-            } 
+            }
+            AccountService.UsrId = user.Id;
+            AccountService.UserName = user.Username;
             this.context.Users.Add(user);
             this.context.SaveChanges();
 
@@ -48,6 +50,7 @@ namespace MusicWorld.Services
             if (user.Id != null)
             {
                 AccountService.UsrId = user.Id;
+                AccountService.UserName = user.Username;
                 return user.Id;
             }
             else return "not found";
@@ -82,6 +85,18 @@ namespace MusicWorld.Services
             {
                 context.Users.Remove(u);
                 context.SaveChanges();
+                return true;
+            }
+            else return false;
+        }
+
+        public bool Logout()
+        {
+            if (String.IsNullOrEmpty(AccountService.UserName) == false)
+            {
+                AccountService.UserName = null;
+                AccountService.UsrId = null;
+
                 return true;
             }
             else return false;

@@ -3,10 +3,8 @@
 @{
     ViewData["Title"] = "Edit";
 }
-
-<h1>Edit</h1>
-
-<h4>Catalog</h4>
+<br/>
+<h2>Edit Catalog</h2>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -24,10 +22,30 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             @*<div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
-                <span asp-validation-for="UserId" class="text-danger"></span>
-            </div>*@
+            <label asp-for="UserId" class="control-label"></label>
+            <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
+            <span asp-validation-for="UserId" class="text-danger"></span>
+        </div>*@
+
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.css" />
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.js"></script>
+            
+            <h5 class="control-label"><b>Choose Songs</b></h5>
+            <br/>
+            <select class="selectpicker"
+                    id="SongId" data-live-search="true"
+                    data-live-search-style="startsWith"
+                    name="SongId" multiple>
+                <option label="Select Song" disabled></option>
+                @foreach (var item in ViewBag.Songs)
+                {
+                    <option>@item.Name</option>
+                }
+            </select>
+            <br /><br />
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

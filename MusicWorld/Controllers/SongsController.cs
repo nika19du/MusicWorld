@@ -19,14 +19,28 @@ namespace MusicWorld.Controllers
             _context = context;
         }
 
+        [HttpGet] 
         // GET: Songs
         public async Task<IActionResult> Index()
         {
             var musicWorldContext = _context.Songs.Include(s => s.Album).Include(s => s.Artist);
             return View(await musicWorldContext.ToListAsync());
+        } 
+        [HttpPost]
+        //POST: Songs
+        public async Task<IActionResult> Index(string searchString)
+        {
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                var song = _context.Songs.Include(x=>x.Album).Include(x=>x.Artist).ToList();
+                song = song.Where(x => x.Name.ToLower().Contains(searchString.ToLower())).ToList();
+               
+                   return View(song.ToList()); 
+            }
+            return NotFound();
         }
 
-        // GET: Songs/Details/5
+        [HttpGet] 
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -46,19 +60,22 @@ namespace MusicWorld.Controllers
             return View(song);
         }
 
+        [HttpGet] 
         // GET: Songs/Create
         public IActionResult Create()
         {
             ViewData["AlbumId"] = new SelectList(_context.Albums, "Id", "Name");
             ViewData["ArtistId"] = new SelectList(_context.Artists, "Id", "Name");
+
+            ViewData["Albums"] = _context.Albums;
+            ViewData["Artists"] = _context.Artists;
+
             return View();
         }
 
-        // POST: Songs/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Songs/Create 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken] //[Bind("Id,Name,Duration,AlbumId,ArtistId")]
         public async Task<IActionResult> Create([Bind("Id,Name,Duration,AlbumId,ArtistId")] Song song)
         {
             if (ModelState.IsValid)
@@ -73,6 +90,7 @@ namespace MusicWorld.Controllers
         }
 
         // GET: Songs/Edit/5
+        [HttpGet] 
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -94,7 +112,7 @@ namespace MusicWorld.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken] 
         public async Task<IActionResult> Edit(string id, [Bind("Id,Name,Duration,AlbumId,ArtistId")] Song song)
         {
             if (id != song.Id)
@@ -128,6 +146,7 @@ namespace MusicWorld.Controllers
         }
 
         // GET: Songs/Delete/5
+        [HttpGet] 
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -149,7 +168,7 @@ namespace MusicWorld.Controllers
 
         // POST: Songs/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken] 
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var song = await _context.Songs.FindAsync(id);

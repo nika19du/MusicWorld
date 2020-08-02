@@ -29,10 +29,17 @@ namespace MusicWorld.Controllers
         {
             this.services.CreateAccount(username, password, firstName,lastName);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Home", "Index");
         }
 
-        [HttpGet]
+        
+        public IActionResult Logout()
+        {
+            services.Logout();
+            return RedirectToAction("Index","Home");
+        }
+
+        [HttpGet] 
         public IActionResult Login()
         {
             return View();

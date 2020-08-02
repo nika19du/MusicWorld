@@ -23,8 +23,17 @@ namespace MusicWorld.Controllers
         // GET: Catalogs
         public async Task<IActionResult> Index()
         {
-            var musicWorldContext = _context.Catalogs.Include(c => c.User);
-            return View(await musicWorldContext.ToListAsync());
+         
+            if (AccountService.UserName=="admin")
+            { 
+                var musicWorldContext = _context.Catalogs.Include(c => c.User);
+                return View(await musicWorldContext.ToListAsync());
+            }
+            else
+            {
+                var usrCatalog = _context.Catalogs;
+                return View(await  usrCatalog.ToListAsync());
+            }
         }
 
         // GET: Catalogs/Details/5
@@ -37,6 +46,7 @@ namespace MusicWorld.Controllers
 
             var catalog = await _context.Catalogs
                 .Include(c => c.User)
+                .Include(x=>x.Songs)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (catalog == null)
             {
@@ -50,28 +60,74 @@ namespace MusicWorld.Controllers
         public IActionResult Create()
         {
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Name");
+
+            ViewData["SongId"] = new SelectList(_context.Songs, "Id", "Name");
+
+            ViewBag.Songs = _context.Songs.ToList();
+
             return View();
         }
 
-        // POST: Catalogs/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Catalogs/Create 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,UserId")] Catalog catalog)
+        [ValidateAntiForgeryToken]//[Bind("Id,Name,Description,UserId")]
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,UserId,SongId")] Catalog catalog,string[] SongId)
         {
             if (ModelState.IsValid)
-            {
+            {  
                 var u = AccountService.UsrId;
                 var usr = _context.Users.FirstOrDefault(x => x.Id == u);
-                catalog.UserId = usr.Id;
+                catalog.UserId = usr.Id;  
                 catalog.User = usr;
+                foreach (var s in SongId)
+                {
+                    var song = _context.Songs.FirstOrDefault(x => x.Name == s); 
+                    catalog.Songs.Add(song);
+                }                 
                 _context.Add(catalog);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Name", catalog.UserId);
+            ViewData["SongId"] = new SelectList(_context.Users, "Id", "Name",catalog.Songs);
+
+            
             return View(catalog);
+        }
+
+        //[HttpGet]
+        //public IActionResult SaveSong()
+        //{
+        //    Song song = new Song(); 
+
+        //}
+
+        [HttpPost]
+        public IActionResult SaveSong(string songId)
+        {
+            if (ModelState.IsValid)
+            { 
+                var s = _context.Songs.FirstOrDefault(x => x.Id == songId);
+
+                var usr = _context.Catalogs.FirstOrDefault(x => x.UserId == AccountService.UsrId);
+
+                if (usr != null && s != null)
+                {
+                    var u = usr.Songs.FirstOrDefault(x => x.Name == s.Name);
+                    if (u==null)
+                    { 
+                        return Json(new { status = "error", message = "This song is already added in playlist" });
+                    }
+                    else
+                    {
+                        usr.Songs.Add(s); 
+                        _context.SaveChanges();
+                        return this.View();
+                    }
+                }
+                else { return NotFound(); }
+            }
+            return NotFound();
         }
 
         // GET: Catalogs/Edit/5
@@ -88,6 +144,7 @@ namespace MusicWorld.Controllers
                 return NotFound();
             }
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Name", catalog.UserId);
+            ViewBag.Songs = _context.Songs.ToList();
             return View(catalog);
         }
 
@@ -96,7 +153,7 @@ namespace MusicWorld.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Name,Description,UserId")] Catalog catalog)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Name,Description,UserId")] Catalog catalog, string[] SongId)
         {
             if (id != catalog.Id)
             {
@@ -107,6 +164,15 @@ namespace MusicWorld.Controllers
             {
                 try
                 {
+                    var u = AccountService.UsrId;
+                    var usr = _context.Users.FirstOrDefault(x => x.Id == u);
+                    catalog.UserId = usr.Id;
+                    catalog.User = usr;
+                    foreach (var s in SongId)
+                    {
+                        var song = _context.Songs.FirstOrDefault(x => x.Name == s);
+                        catalog.Songs.Add(song);
+                    }
                     _context.Update(catalog);
                     await _context.SaveChangesAsync();
                 }

@@ -1,53 +1,73 @@
-﻿@model IEnumerable<MusicWorld.Data.Models.Song>
+﻿@model List<MusicWorld.Data.Models.Song>
+@using MusicWorld.Services.MusicWorld
+@using MusicWorld.Services
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>All Albums</h1>
+<br />
+<h1 style="text-align:center">All Songs</h1>
+@if (AccountService.UsrId != null && AccountService.UserName!="admin")
+{
+    <a asp-action="Create" style="background-color:#0676FD;color:white;border:none;font-size:20px;padding: 10px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;">
+        New
+    </a>
+}
+<br />
+<br />
+<form asp-controller="Songs" asp-action="Index" method="post">
+    <p>
+        Name: <input type="text" name="SearchString" />
+        <input type="submit" value="Filter" placeholder="Search song..." />
+    </p>
+</form>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<table class="table" style="position:static">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                <h3>Name</h3>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Duration)
+                <h3>Duration</h3>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Album)
+                <h3>Album</h3>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Artist)
+                <h3>Artist</h3>
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Duration)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Album.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Artist.Name)
-            </td>
-            <td type="button">
-                <a class="btn-edit" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                <a class="btn-edit" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                <a class="btn-delete" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Duration)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Album.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Artist.Name)
+                </td>
+                @if (@MusicWorld.Services.AccountService.UserName == "admin")
+                {
+                    <td type="button">
+                        <a class="btn-edit" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                        <a class="btn-edit" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <a class="btn-delete" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                }
+            </tr>
+        }
     </tbody>
 </table>

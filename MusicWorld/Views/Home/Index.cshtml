@@ -1,7 +1,36 @@
-﻿
+﻿@using MusicWorld.Services
+
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
 
+@if (AccountService.UsrId == null)
+{
+    <br />
+    <br />  
+    <div class="jumbotron bg-eventures mx-auto" style="width:105%!important;background-color:azure">
+        <h1>Music World - The best music service in the world.</h1>
+        <hr class="hr-2 bg-white" />
+        <h3 class="mt-4"><a href="/Users/Login">Login</a> to start.</h3>
+        <h3 class="mt-4"><a href="/Users/Create">Register</a> if you don't have an account.</h3>
+    </div>
+}
+else 
+{
+    <br />
+    <br />
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            @if (AccountService.UserName == "admin")
+            {
+                <h1 class="display-4">Welcome Administrator - @AccountService.UserName</h1>
+            }
+            else
+            {
+                <h1 class="display-4">Welcome - @AccountService.UserName</h1>
+            }
+            <p class="lead">Have a nice work experience!</p>
+        </div>
+    </div> 
+} 

@@ -1,4 +1,11 @@
-﻿.topnav {
+﻿.body{
+    height:100px;
+    margin:0px;
+    padding:0px;
+}  
+
+
+.topnav {
     overflow: hidden;
     background-color: #333;
 }
@@ -12,18 +19,17 @@
         text-decoration: none;
     }
 
-/* Style the content */
+ Style the content 
 .content {
-    background-color: #e1dcc5;
-    padding: 10px;
-    /* Should be removed. Only for demonstration */
+    background-color: #e1dcc5; 
+   /*Should be removed. Only for demonstration*/   
 }
 
-/* Change color on hover */
+ /*Change color on hover*/ 
 .topnav a:hover {
     background-color: #ddd;
     color: red;
-}
+} 
 
 .topnav-right {
     float: right;
@@ -69,12 +75,26 @@
 
 .dropdown-menu:hover .dropdown-content {
     display: block;
+} 
+.bg-eventures {
+    background-color: #AFEEEE;
 }
-/* Style the footer */
-.footer {
-    background-color: #76afcc;
-    padding: 10px;
+
+.text-eventures {
+    color: #AFEEEE;
 }
+
+hr.hr-2 {
+    height: 2px;
+}
+
+.w-45 {
+    width: 45%;
+}
+
+.row {
+    width: 98%;
+} 
 
 .login-holder {
     width: 100%;
@@ -109,6 +129,10 @@
     padding: 10px;
     width: 100%;
     text-transform: uppercase;
+}
+
+.link {
+    color: #69d2e7;
 }
 
 .uname {
@@ -147,8 +171,8 @@
 
 table {
     border-collapse: collapse;
-    width: 100%;
-    position: absolute;
+    /*width: 100%;*/
+    /*position: fixed;*/
 }
 
 th,
@@ -194,4 +218,4 @@ tr:nth-child(even) {
     width: 120px;
     height: 80px;
 }
-/*style="width:120px;"*/
+/*style="width:120*/

@@ -12,6 +12,8 @@ namespace MusicWorld.Services.Contracts
 
         string Login(string username, string password);
 
+        bool Logout();
+
         string Update(CreateUserViewModel userService, string id);
 
         bool Delete(string id);

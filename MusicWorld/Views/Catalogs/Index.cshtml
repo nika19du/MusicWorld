@@ -1,10 +1,13 @@
 ﻿@model IEnumerable<MusicWorld.Data.Models.Catalog>
+@using MusicWorld.Data.Models
+@using MusicWorld.Services
+@using MusicWorld.Data
 
 @{
     ViewData["Title"] = "Index";
 }
-
-<h1>All Catalogs</h1>
+<br />
+<h1>All Playlist</h1>
 <a asp-action="Create" style="background-color:#0676FD;color:white;border:none;font-size:20px;padding: 10px 25px;
   text-align: center;
   text-decoration: none;
@@ -20,30 +23,52 @@
             <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>
-            <th></th>
+            @if (AccountService.UserName == "admin")
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.User)
+                </th>
+
+            }
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Username)
-            </td>
-            <td type="button">
-                <a class="btn-edit" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                <a class="btn-edit" asp-action="Update" asp-route-id="@item.Id">Edit</a>
-                <a class="btn-delete" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                @if (item.UserId == AccountService.UsrId && AccountService.UserName!="admin")
+                { 
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td type="button">
+                        <a class="btn-edit" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                        <a class="btn-edit" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <a class="btn-delete" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td> 
+                }
+                else if (AccountService.UserName == "admin")// && item.UserId != AccountService.UsrId)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.Username)
+                    </td>
+
+                    <td type="button">
+                        <a class="btn-edit" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                        <a class="btn-edit" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <a class="btn-delete" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                }
+            </tr>
+        }
     </tbody>
 </table>
