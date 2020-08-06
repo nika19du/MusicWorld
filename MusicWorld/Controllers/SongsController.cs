@@ -60,13 +60,20 @@ namespace MusicWorld.Controllers
             return View(song);
         }
 
+        public JsonResult GetAlbumList(string ArtistId)
+        {
+            List<Album> AlbumList = _context.Albums.Where(x => x.ArtistId == ArtistId).ToList();
+            return Json(AlbumList);//new { Data=AlbumList});
+        }//, System.Web.Mvc.JsonRequestBehavior.AllowGet
+
         [HttpGet] 
         // GET: Songs/Create
         public IActionResult Create()
         {
-            ViewData["AlbumId"] = new SelectList(_context.Albums, "Id", "Name");
-            ViewData["ArtistId"] = new SelectList(_context.Artists, "Id", "Name");
-
+            //ViewData["AlbumId"] = new SelectList(_context.Albums, "Id", "Name");
+            List<Artist> ArtistList = _context.Artists.ToList();
+            ViewBag.ArtistId = new SelectList(ArtistList, "Id", "Name");
+            //ViewBag["ArtistId"]
             ViewData["Albums"] = _context.Albums;
             ViewData["Artists"] = _context.Artists;
 
@@ -75,7 +82,7 @@ namespace MusicWorld.Controllers
 
         // POST: Songs/Create 
         [HttpPost]
-        [ValidateAntiForgeryToken] //[Bind("Id,Name,Duration,AlbumId,ArtistId")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Duration,AlbumId,ArtistId")] Song song)
         {
             if (ModelState.IsValid)
@@ -103,14 +110,14 @@ namespace MusicWorld.Controllers
             {
                 return NotFound();
             }
-            ViewData["AlbumId"] = new SelectList(_context.Albums, "Id", "Name", song.AlbumId);
+            List<Artist> ArtistList = _context.Artists.ToList();
+            ViewBag.ArtistId = new SelectList(ArtistList, "Id", "Name");
+            // ViewData["AlbumId"] = new SelectList(_context.Albums, "Id", "Name", song.AlbumId);
             ViewData["ArtistId"] = new SelectList(_context.Artists, "Id", "Name", song.ArtistId);
             return View(song);
         }
 
-        // POST: Songs/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Songs/Edit/5 
         [HttpPost]
         [ValidateAntiForgeryToken] 
         public async Task<IActionResult> Edit(string id, [Bind("Id,Name,Duration,AlbumId,ArtistId")] Song song)

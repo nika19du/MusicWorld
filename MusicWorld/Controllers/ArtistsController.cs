@@ -42,7 +42,7 @@ namespace MusicWorld.Controllers
 
             artistService.Create(artist);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("All", "Artists");
         }
 
         public IActionResult All()
@@ -78,7 +78,7 @@ namespace MusicWorld.Controllers
 
                 artistService.Update(artist, id.Id);
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("All", "Artists");
             }
             else
             {
@@ -90,7 +90,7 @@ namespace MusicWorld.Controllers
         {
             var isTrue = artistService.Delete(id);
 
-            if (isTrue==true)
+            if (isTrue!=true)
             {
                 return RedirectToAction("Index", "Home");
             }

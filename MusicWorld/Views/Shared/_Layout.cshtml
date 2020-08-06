@@ -9,8 +9,9 @@
     <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR9Ny-k4CDkzw-l6CPASY_onqSC4T2hfZrjLQ&usqp=CAU"
           type="image/x-icon">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/site.css" /> 
 
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
 </head>
@@ -26,7 +27,7 @@
                 <div class="navbar-collapse collapse d-flex justify-content-between" id="navbarNav" timeout="2880">
                     <ul class="navbar-nav">
                         <li class="nav-item link">
-                            <a class="nav-link text-dark " asp-area="" asp-page="/Index">Home</a>
+                            <a class="nav-link text-dark " asp-area="" asp-page="/Home/Index">Home</a>
                         </li>
                         @if (AccountService.UsrId == null)//ako ne e lognat da se
                         {

@@ -69,9 +69,21 @@ namespace MusicWorld.Controllers
         }
 
         [HttpGet]
-        public IActionResult All()
+        public IActionResult All(string sortOrder)
         {
-            return View(context.Users.ToList());
+            var usr= context.Users.AsQueryable();
+            ViewData["NameOrder"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    usr = usr.OrderByDescending(x => x.Username);
+                    break;
+                default:
+                    usr = usr.OrderBy(x => x.Username);
+                    break;
+            }//context.Users.ToList()
+
+            return View(usr.ToList());
         }
 
         [HttpGet(Name = "Delete")]

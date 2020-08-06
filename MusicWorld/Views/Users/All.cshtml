@@ -9,14 +9,14 @@
   text-align: center;
   text-decoration: none;
   display: inline-block;">
-    New 
-</a>
+    New
+</a> 
 
 <div class="table-all-users">
     <table class="table">
         <thead>
             <tr>
-                <th><h3>Username</h3></th>
+                <th><h3><a asp-action="All" asp-route-sortOrder="@ViewData["NameOrder"]">Username</a></h3></th>
                 <th><h3>First Name</h3></th>
                 <th><h3>Last Name</h3></th>
             </tr>
@@ -24,7 +24,7 @@
         <tbody>
             @foreach (var item in Model)
             {
-                
+
                 <tr>
                     <td>@item.Username</td>
                     <td>@item.FirstName</td>
@@ -34,10 +34,10 @@
                         <a class="btn-edit" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                         <a class="btn-delete" asp-action="Delete" asp-route-id="@item.Id">
                             Delete
-                        </a> 
-                    </td> 
+                        </a>
+                    </td>
                 </tr>
             }
         </tbody>
-    </table> 
+    </table>
 </div> 

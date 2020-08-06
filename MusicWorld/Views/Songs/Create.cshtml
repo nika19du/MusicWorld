@@ -26,25 +26,42 @@
                 <label asp-for="Duration" class="control-label"></label>
                 <input asp-for="Duration" class="form-control" />
                 <span asp-validation-for="Duration" class="text-danger"></span>
+            </div> 
+           
+            <div class="form-group">
+                <label asp-for="Artist">Artist</label>
+                @Html.DropDownListFor(model => model.ArtistId, ViewBag.ArtistId as SelectList, "--Select Artist--", new { @class = "form-control" })
             </div>
             <div class="form-group">
-            <label asp-for="AlbumId" class="control-label"></label>
-            <select asp-for="AlbumId" class="form-control" asp-items="ViewBag.AlbumId"></select>
-        </div>
-        <div class="form-group">
-            <label asp-for="ArtistId" class="control-label"></label>
-            <select asp-for="ArtistId" class="form-control" asp-items="ViewBag.ArtistId"></select>
-        </div> 
+                <label asp-for="Album">Album</label>
+                @Html.DropDownListFor(model => model.AlbumId, new SelectList(" "), "--Select Album--", new { @class = "form-control" })
+            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+  
+<script>
+    $(document).ready(function () {
+        $("#ArtistId").change(function () {
+            $.get("/Songs/GetAlbumList", { ArtistId: $("#ArtistId").val() }, function (data) {
+                $("#AlbumId").empty();
+                 
+                if (data.length === 0) {
+                    $("#AlbumId").append("<option disabled='disabled'>"+"No Albums"+"</option>")
+                }
+                else {
+                    for (var i = 0; i < data.length; i++) {
+                        console.log(data[i]);
+                        $("#AlbumId").append("<option >" + data[i].name + "</option>")
+                    }
+                } 
+            });
+        })
+    });
+</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
